@@ -1,6 +1,6 @@
-FROM bde2020/spark-base:2.4.4-hadoop2.7
+FROM coqueirotree/spark-base2.4.4-hadoop2.7-aws-support
 
-LABEL maintainer="Gezim Sejdiu <g.sejdiu@gmail.com>, Giannis Mouchakis <gmouchakis@gmail.com>"
+LABEL maintainer="github.com/Coqueiro"
 
 COPY master.sh /
 
