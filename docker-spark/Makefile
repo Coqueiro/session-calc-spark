@@ -44,7 +44,7 @@ bump:
 	@git commit -m "${CLUSTER_COMPONENT} version bump to ${VERSION}"
 	@git push origin ${GIT_BRANCH}
 
-release: build push
+release: bump build push
 
 pull:
 	@docker pull ${IMAGE}:${VERSION}

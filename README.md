@@ -1,11 +1,9 @@
-# WIP
-
-Calcular o tempo de sessão de usuários utilizando um cluster de Spark em Docker
+# Calcular o tempo de sessão de usuários utilizando um cluster de Spark em Docker
 
 ## Setup
 O arquivo `.hub_password` precisa ser criado e colocado dentro da pasta raíz do projeto. Ele deve conter o token de acesso para o repositório de imagens Docker para que seja possível realizar comandos de `push` e `pull` de imagens.
 
-Análise exploratória de dados:
+## Análise exploratória de dados:
 - Não existem campos com valores nulos dentro da amostra. Confiando que este padrão é significante, não iremos adicionar etapas de tratamento de dados a fim de otimizar a execução da aplicação.
 
 ```python
@@ -19,5 +17,15 @@ Análise exploratória de dados:
         f.countDistinct("browser_family").alias("browser_family_uniques"),
         f.countDistinct("device_family").alias("device_family_uniques"),
         f.countDistinct("os_family").alias("os_family_uniques")
-    )
+    ).filter((f.col("browser_family_uniques") > 1) | (f.col("device_family_uniques") > 1) | (f.col("os_family_uniques") > 1))
 ```
+
+## TODO
+
+- Modularização
+- Testes unitários
+- Documentação Completa
+- Action CI
+- Action de teste unitários
+- Medidor de cobertura de testes
+- Medidor de Linting

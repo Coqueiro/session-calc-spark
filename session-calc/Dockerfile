@@ -6,12 +6,9 @@ FROM coqueirotree/spark-submit${SPARK_VERSION}-hadoop${HADOOP_VERSION}-aws-suppo
 
 LABEL maintainer="github.com/Coqueiro"
 
-# ARG arg1
-
 ENV SPARK_MASTER_NAME spark-master
 ENV SPARK_MASTER_PORT 7077
 ENV SPARK_APPLICATION_PYTHON_LOCATION /app/entrypoint.py
-# ENV SPARK_APPLICATION_ARGS "--arg1 ${arg1}"
 
 # Copy the requirements.txt first, for separate dependency resolving and downloading
 COPY requirements.txt /app/

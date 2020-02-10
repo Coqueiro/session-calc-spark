@@ -1,3 +1,6 @@
+MAX_SESSION_SECONDS?=1800
+GROUP_KEY?=device_family # [browser_family, device_family, os_family]
+
 HUB_PUBLISHER?=coqueirotree
 HUB_PASSWORD?=$(shell cat .hub_password)
 SPARK_VERSION?=2.4.4
@@ -5,7 +8,6 @@ HADOOP_VERSION?=3.1.2
 APP_IMAGE=${HUB_PUBLISHER}/spark-session-calc${SPARK_VERSION}-hadoop${HADOOP_VERSION}-aws-support
 SUBMIT_VERSION=$(shell cat docker-spark/submit/VERSION)
 APP_VERSION=$(shell cat session-calc/VERSION)
-
 
 build_app:
 	@cd session-calc ; \
@@ -23,10 +25,10 @@ push_app: login
 	@docker push ${APP_IMAGE}:${APP_VERSION}
 	@docker push ${APP_IMAGE}:latest
 
-bump:
+bump_app:
 	@python3 -m pip install bumpversion==0.5.3
 	@bumpversion --current-version ${APP_VERSION} ${BUMP_LEVEL} session-calc/VERSION
-	@git add ${session-calc}/VERSION
+	@git add session-calc/VERSION
 	@git commit -m "session-calc version bump to ${VERSION}"
 	@git push origin ${GIT_BRANCH}
 
@@ -45,14 +47,23 @@ release_docker_spark:
 # Support currently available for local docker spark execution only
 run_app:
 	@cd docker-spark; docker-compose -f docker-compose.yml up -d
-	@echo "Waiting 10 seconds for docker-spark cluster setup"; sleep 10
+	@echo "Waiting 10 seconds for docker-spark cluster setup."; sleep 10
 	@docker run --name session-calc \
 	-e ENABLE_INIT_DAEMON=false \
+	-e MAX_SESSION_SECONDS=${MAX_SESSION_SECONDS} \
+	-e GROUP_KEY=${GROUP_KEY} \
+	-v $(shell pwd)/session-calc/output:/app/output:rw \
 	--link spark-master:spark-master \
 	--net docker-spark_default ${APP_IMAGE}:${APP_VERSION}
 
 clean_app:
+	@echo "Removing dangling containers."
 	@docker rm -f $(shell docker ps -a -q --filter 'name=session-calc')
 	@cd docker-spark; docker-compose -f docker-compose.yml down
 
 session_calc: run_app clean_app
+
+debug_app:
+	@docker run -it \
+	-v $(shell pwd)/session-calc/output:/app/output:rw \
+	${APP_IMAGE}:${APP_VERSION} bash

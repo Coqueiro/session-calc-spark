@@ -1,5 +1,6 @@
 # Project specific files
 .hub_password
+session-calc/output
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
