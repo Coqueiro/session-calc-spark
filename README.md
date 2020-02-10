@@ -4,7 +4,7 @@
 ```bash
 make pull_app
 make pull_docker_spark
-GROUP_KEY={chave_de_grupamento} make session_calc # [browser_family, os_family, device_family]
+GROUP_KEY={chave_de_grupamento} make -k session_calc # [browser_family, os_family, device_family]
 ```
 
 Os arquivos de resultado são gravados no endereço local `./session-calc/output`.
@@ -55,9 +55,9 @@ make build_docker_spark
     - `os_family` (Família do Sistema Operacional usado pelo usuário)
     - `device_family` (Família do Dispositivo usado pelo usuário)
 
-- Uma vez escolhida a chave de agrupamento, a mesma pode ser passada pela variável de ambiente `GROUP_KEY`, e em seguida deve-se chamar o comando `make session_calc`, como, por exemplo:
+- Uma vez escolhida a chave de agrupamento, a mesma pode ser passada pela variável de ambiente `GROUP_KEY`, e em seguida deve-se chamar o comando `make -k session_calc`, como, por exemplo:
 ```bash
-GROUP_KEY=os_family make session_calc
+GROUP_KEY=os_family make -k session_calc
 ```
 
 - Existem algumas opções de parâmetros que o *job* também aceita como variável de ambiente, cujos valores padrões são os determinados pelo desafio. Segue lista das variáveis de execução, seus valores padrões e suas descrições:
@@ -81,7 +81,7 @@ GROUP_KEY=os_family make session_calc
 
 
 ## Fazendo *release* das imagens
-- Para atualizar a imagem da aplicação e torná-la disponível através do repositório de imagens [Docker Hub](https://hub.docker.com/) é necessário realizar o comando `make release_app` para a aplicação ou `make release_docker_spark` para as imagens do cluster de Spark em Docker.
+- Para atualizar a imagem da aplicação e torná-la disponível através do repositório de imagens [Docker Hub](https://hub.docker.com/) é necessário realizar o comando `make release_app` para a aplicação ou `make release_docker_spark` para as imagens do cluster de Spark em Docker. Atualizações no projeto devem ser seguidas de bumps de versão nas imagens para manter a consistência do projeto.
 
 - Os seguintes parâmetros podem ser utilizados para alterar o *build* da imagem. É recomendado que essas mudanças sejam feitas com cautela por alterarem componentes estruturais da solução:
 
@@ -97,21 +97,15 @@ GROUP_KEY=os_family make session_calc
 
 
 ## Análise exploratória de dados:
-- Não existem campos com valores nulos dentro da amostra. Confiando que este padrão é significante, não iremos adicionar etapas de tratamento de dados a fim de otimizar a execução da aplicação.
 
-```python
-    df.select([f.count(f.when(f.isnan(c), c)).alias(c) for c in df.columns]).show()
-```
+O objetivo desta análise é entender melhor o *dataset* de entrada, e adaptar a solução de acordo com os dados disponíveis. Para rodar a análise exploratória, basta rodar o comando `make -k eda`.
 
-- Um mesmo `anonymous_id` pode ter mais de um `browser_family`, `device_family` e `os_family` diferentes?
+### Descobertas relevantes:
 
-```python
-    df.groupBy("anonymous_id").agg(
-        f.countDistinct("browser_family").alias("browser_family_uniques"),
-        f.countDistinct("device_family").alias("device_family_uniques"),
-        f.countDistinct("os_family").alias("os_family_uniques")
-    ).filter((f.col("browser_family_uniques") > 1) | (f.col("device_family_uniques") > 1) | (f.col("os_family_uniques") > 1))
-```
+- Não existem campos com valores nulos dentro da amostra. Confiando que este padrão é significante, não iremos adicionar etapas de filtros de dados vazios a fim de otimizar a execução da aplicação.
+
+- Um mesmo `anonymous_id` pode ter mais de um `browser_family`, `device_family` ou `os_family` diferentes, com **393** ocorrências na amostragem. Isto é significante pois significa que uma sessão pode percorrer agrupamentos diferentes, e poderia ser, portanto, contada em mais de um agrupamento. Levando em consideração que regra de sessionamento inclui que a abertura da sessão acontece para o primeiro evento de um usuário, e que a taxa de ocorrência desses casos é muito pequena, iremos desconsiderar mudanças de `browser_family`, `device_family` ou `os_family` durante a sessão.
+
 
 ## TODO
 

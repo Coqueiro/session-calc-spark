@@ -53,7 +53,7 @@ bump_app:
 	@git commit -m "session-calc version bump to ${VERSION}"
 	@git push origin ${GIT_BRANCH}
 
-release_app: bump_app build_app push_app
+release_app: build_app push_app
 
 pull_app:
 	@docker pull ${APP_IMAGE}:${APP_VERSION}
@@ -78,9 +78,11 @@ pull_docker_spark:
 	@CLUSTER_COMPONENT=submit make pull
 
 # Support currently available for local docker spark execution only
-run_app:
+run_docker_spark:
 	@cd docker-spark; docker-compose -f docker-compose.yml up -d
 	@echo "Waiting 10 seconds for docker-spark cluster setup."; sleep 10
+
+run_app: run_docker_spark
 	@docker run --rm --name session-calc \
 	-e ENABLE_INIT_DAEMON=false \
 	-e READ_PATH=${READ_PATH} \
@@ -98,6 +100,16 @@ clean_app:
 	@cd docker-spark; docker-compose -f docker-compose.yml down
 
 session_calc: run_app clean_app
+
+run_eda: run_docker_spark
+	@docker run --rm --name eda \
+	-e ENABLE_INIT_DAEMON=false \
+	-e READ_PATH=${READ_PATH} \
+	-v $(shell pwd)/eda:/app:ro \
+	--link spark-master:spark-master \
+	--net docker-spark_default ${APP_IMAGE}:${APP_VERSION}
+
+eda: run_eda clean_app
 
 debug_app:
 	@docker run -it \
