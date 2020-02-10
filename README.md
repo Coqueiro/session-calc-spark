@@ -8,6 +8,7 @@
 ```bash
 make pull_app
 make pull_docker_spark
+make test_app
 GROUP_KEY={chave_de_grupamento} make -k session_calc # [browser_family, os_family, device_family]
 ```
 
@@ -17,7 +18,7 @@ Os arquivos de resultado são gravados no endereço local `./session-calc/output
 # Contagem de sessões de usuários agrupadas por chave
 
 
-Este *job* tem o objetivo realizar a contagem de sessões de usuários agrupadas por chave, utilizando um *job* em `pyspark` para extrair os dados de um bucket público da S3 e criar um `.json` em disco com os agrupamentos por chave pivotados.
+Este *job* tem o objetivo realizar a contagem de sessões de usuários agrupadas por chave, utilizando um *job* em `pyspark` para extrair os dados de um *bucket* público da S3 e criar um `.json` em disco com os agrupamentos por chave pivotados.
 
 Exemplo de dados na S3:
 ```json
@@ -117,4 +118,4 @@ O objetivo desta análise é entender melhor o *dataset* de entrada, e adaptar a
 
 - Não existem campos com valores nulos dentro da amostra. Confiando que este padrão é significante, não iremos adicionar etapas de filtros de dados vazios a fim de otimizar a execução da aplicação.
 
-- Um mesmo `anonymous_id` pode ter mais de um `browser_family`, `device_family` ou `os_family` diferentes, com **393** ocorrências na amostragem. Isto é significante pois significa que uma sessão pode percorrer agrupamentos diferentes, e poderia ser, portanto, contada em mais de um agrupamento. Levando em consideração que regra de sessionamento inclui que a abertura da sessão acontece para o primeiro evento de um usuário, e que a taxa de ocorrência desses casos é muito pequena, iremos desconsiderar mudanças de `browser_family`, `device_family` ou `os_family` durante a sessão.
+- Um mesmo `anonymous_id` pode ter mais de um `browser_family`, `device_family` ou `os_family` diferentes, com **393** ocorrências na amostragem. Isto é significante pois significa que uma sessão pode percorrer agrupamentos diferentes, e poderia ser, portanto, contada em mais de um agrupamento. Levando em consideração que a regra de sessionamento inclui que a abertura da sessão acontece para o primeiro evento de um usuário, e que a taxa de ocorrência desses casos é muito pequena, iremos desconsiderar mudanças de `browser_family`, `device_family` ou `os_family` durante a sessão.
