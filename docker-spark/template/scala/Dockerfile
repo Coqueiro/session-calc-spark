@@ -1,4 +1,4 @@
-FROM bde2020/spark-submit:2.4.4-hadoop2.7
+FROM bde2020/spark-submit:2.4.4-hadoop3.1.2
 
 LABEL maintainer="Gezim Sejdiu <g.sejdiu@gmail.com>, Giannis Mouchakis <gmouchakis@gmail.com>"
 

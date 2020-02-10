@@ -1,0 +1,7 @@
+{"user_key": "1", "timestamp_key": 1000, "group_field1": "A", "group_field2": "X"}
+{"user_key": "1", "timestamp_key": 2000, "group_field1": "A", "group_field2": "X"}
+{"user_key": "1", "timestamp_key": 6000, "group_field1": "A", "group_field2": "Y"}
+{"user_key": "1", "timestamp_key": 9600, "group_field1": "A", "group_field2": "Y"}
+{"user_key": "2", "timestamp_key": 1000, "group_field1": "A", "group_field2": "Z"}
+{"user_key": "2", "timestamp_key": 1000, "group_field1": "A", "group_field2": "Z"}
+{"user_key": "2", "timestamp_key": 8000, "group_field1": "B", "group_field2": "W"}

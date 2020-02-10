@@ -1,6 +1,11 @@
-FROM bde2020/spark-base:2.4.4-hadoop2.7
+ARG HUB_PUBLISHER
+ARG SPARK_VERSION
+ARG HADOOP_VERSION
+ARG BASE_VERSION
 
-LABEL maintainer="Gezim Sejdiu <g.sejdiu@gmail.com>, Giannis Mouchakis <gmouchakis@gmail.com>"
+FROM ${HUB_PUBLISHER}/spark-base${SPARK_VERSION}-hadoop${HADOOP_VERSION}-aws-support:${BASE_VERSION}
+
+LABEL maintainer="github.com/Coqueiro"
 
 ENV SPARK_MASTER_NAME spark-master
 ENV SPARK_MASTER_PORT 7077
