@@ -116,6 +116,4 @@ O objetivo desta análise é entender melhor o *dataset* de entrada, e adaptar a
 ## TODO
 
 - Action CI
-- Action de teste unitários
-- Medidor de cobertura de testes
 - Medidor de Linting
