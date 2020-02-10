@@ -43,7 +43,7 @@ def main():
         GROUP BY {GROUP_KEY}
     ''')
 
-    user_sessions.show()
+    sessions_by_group.show()
 
 
 if __name__ == "__main__":
