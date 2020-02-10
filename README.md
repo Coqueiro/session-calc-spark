@@ -1,5 +1,7 @@
 # [Data Engineer Code Challenge](https://grupozap.github.io/squad-data-platform/data-engineer-test)
 
+[![Tests](https://github.com/Coqueiro/session-calc-spark/workflows/Run%20tests/badge.svg)](https://github.com/Coqueiro/session-calc-spark/workflows/Run%20tests/badge.svg)
+
 *TL;DR:* Rodar na raiz do projeto:
 ```bash
 make pull_app
