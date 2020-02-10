@@ -2,6 +2,7 @@
 
 [![Tests](https://github.com/Coqueiro/session-calc-spark/workflows/Run%20tests/badge.svg)](https://github.com/Coqueiro/session-calc-spark/workflows/Run%20tests/badge.svg)
 [![codecov](https://codecov.io/gh/Coqueiro/session-calc-spark/branch/master/graph/badge.svg?token=L3VbWQEfb4)](https://codecov.io/gh/Coqueiro/session-calc-spark)
+[![Release](https://github.com/Coqueiro/session-calc-spark/workflows/Release/badge.svg)](https://github.com/Coqueiro/session-calc-spark/workflows/Release/badge.svg)
 
 *TL;DR:* Rodar na raiz do projeto:
 ```bash
