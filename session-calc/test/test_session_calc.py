@@ -1,6 +1,6 @@
 import os
 
-from .spark_test import SparkTest
+from .test_spark import SparkTest
 from entrypoint import main
 
 WRITE_PATH = os.environ['WRITE_PATH']

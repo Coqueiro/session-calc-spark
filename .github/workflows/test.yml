@@ -1,0 +1,35 @@
+name: Run tests
+on: push
+jobs:
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    container:
+      image: docker://coqueirotree/docker-pyspark:0.0.1
+      env:
+        READ_PATH: test/data/part0.json
+        WRITE_PATH: /output
+        USER_KEY: user_key
+        TIMESTAMP_KEY: timestamp_key
+        MAX_SESSION_SECONDS: 3600
+        GROUP_KEY: group_field1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.ref }}
+      - name: Code coverage
+        run: |
+          cd session-calc
+          python3 -m pip install pytest
+          python3 -m pip install pytest-cov
+          python3 -m pytest --cov=./ --cov-report=xml
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.codecov_token }}
+          file: ./session-calc/coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          yml: ./session-calc/codecov.yml
+          fail_ci_if_error: true
