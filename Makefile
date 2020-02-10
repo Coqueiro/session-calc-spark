@@ -16,8 +16,10 @@ GIT_BRANCH=$(shell git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 
 
 test_app:
-	@python3 -m pip install pyspark
-	@cd session-calc; python3 -m unittest tests.session_calc_test
+	@docker run --rm --name docker-pyspark \
+	-v $(shell pwd)/session-calc:/app:ro \
+	coqueirotree/docker-pyspark:0.0.1 \
+	python3 -m unittest tests.session_calc_test
 
 build_app:
 	@cd session-calc ; \
@@ -59,7 +61,7 @@ release_docker_spark:
 run_app:
 	@cd docker-spark; docker-compose -f docker-compose.yml up -d
 	@echo "Waiting 10 seconds for docker-spark cluster setup."; sleep 10
-	@docker run --name session-calc \
+	@docker run --rm --name session-calc \
 	-e ENABLE_INIT_DAEMON=false \
 	-e READ_PATH=${READ_PATH} \
 	-e USER_KEY=${USER_KEY} \
@@ -72,7 +74,6 @@ run_app:
 
 clean_app:
 	@echo "Removing dangling containers."
-	@docker rm -f $(shell docker ps -a -q --filter 'name=session-calc')
 	@cd docker-spark; docker-compose -f docker-compose.yml down
 
 session_calc: run_app clean_app

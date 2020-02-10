@@ -1,6 +1,7 @@
 # Project specific files
 .hub_password
 session-calc/output
+spark-warehouse
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
