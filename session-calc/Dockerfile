@@ -1,4 +1,8 @@
-FROM coqueirotree/spark-submit2.4.4-hadoop2.7-aws-support:latest
+ARG SPARK_VERSION
+ARG HADOOP_VERSION
+ARG SUBMIT_VERSION
+
+FROM coqueirotree/spark-submit${SPARK_VERSION}-hadoop${HADOOP_VERSION}-aws-support:${SUBMIT_VERSION}
 
 LABEL maintainer="github.com/Coqueiro"
 
@@ -9,8 +13,6 @@ ENV SPARK_MASTER_PORT 7077
 ENV SPARK_APPLICATION_PYTHON_LOCATION /app/entrypoint.py
 # ENV SPARK_APPLICATION_ARGS "--arg1 ${arg1}"
 
-COPY session-calc.sh /
-
 # Copy the requirements.txt first, for separate dependency resolving and downloading
 COPY requirements.txt /app/
 RUN cd /app \
@@ -19,4 +21,4 @@ RUN cd /app \
 # Copy the source code
 COPY . /app
 
-CMD ["/bin/bash", "/session-calc.sh"]
+CMD ["/bin/bash", "/submit.sh"]

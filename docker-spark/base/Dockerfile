@@ -2,12 +2,12 @@ FROM alpine:3.10
 
 LABEL maintainer="github.com/Coqueiro"
 
+ARG SPARK_VERSION
+ARG HADOOP_VERSION
+
 ENV ENABLE_INIT_DAEMON true
 ENV INIT_DAEMON_BASE_URI http://identifier/init-daemon
 ENV INIT_DAEMON_STEP spark_master_init
-
-ENV SPARK_VERSION=2.4.4
-ENV HADOOP_VERSION=3.1.2
 
 ENV SPARK_HOME=/spark
 ENV HADOOP_HOME=/hadoop

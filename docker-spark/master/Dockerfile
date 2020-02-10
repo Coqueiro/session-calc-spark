@@ -1,4 +1,8 @@
-FROM coqueirotree/spark-base2.4.4-hadoop2.7-aws-support
+ARG SPARK_VERSION
+ARG HADOOP_VERSION
+ARG BASE_VERSION
+
+FROM coqueirotree/spark-base${SPARK_VERSION}-hadoop${HADOOP_VERSION}-aws-support:${BASE_VERSION}
 
 LABEL maintainer="github.com/Coqueiro"
 
