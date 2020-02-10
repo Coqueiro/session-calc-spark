@@ -27,6 +27,8 @@ Exemplo de saída de dados:
 {"iPhone":42,"Generic Smartphone":12,"Samsung SM-J120H":7,"Samsung SM-J500M":4}
 ```
 
+Este projeto se utiliza de código presente nos seguintes repositórios:
+- https://github.com/big-data-europe/docker-spark
 
 
 ## *Setup*
@@ -47,6 +49,7 @@ make pull_docker_spark
 make build_app
 make build_docker_spark
 ```
+
 
 ## Rodar o *job* localmente
 - É necessário escolher qual a chave que será utilizada para o agrupamento dentre as seguintes opções (de acordo com o desafio):
