@@ -23,7 +23,7 @@ def get_user_sessions(spark, events, user_key, timestamp_key, max_session_second
             ) last_events
         ) sessions
         WHERE is_new_session = 1
-    ''').drop(*[timestamp_key, f"last_{timestamp_key}", "is_new_session"])
+    ''').drop(*[timestamp_key, f'last_{timestamp_key}', 'is_new_session'])
 
     return user_sessions
 

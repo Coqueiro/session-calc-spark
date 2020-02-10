@@ -1,4 +1,5 @@
 READ_PATH?=s3a://lucas-spark-read-test/
+WRITE_PATH?=session-calc/output
 USER_KEY?=anonymous_id
 TIMESTAMP_KEY?=device_sent_timestamp
 MAX_SESSION_SECONDS?=1800
@@ -18,8 +19,14 @@ GIT_BRANCH=$(shell git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 test_app:
 	@docker run --rm --name docker-pyspark \
 	-v $(shell pwd)/session-calc:/app:ro \
+	-e READ_PATH=tests/data/part0.json \
+	-e WRITE_PATH=/output \
+	-e USER_KEY=user_key \
+	-e TIMESTAMP_KEY=timestamp_key \
+	-e MAX_SESSION_SECONDS=3600 \
+	-e GROUP_KEY=group_field1 \
 	coqueirotree/docker-pyspark:0.0.1 \
-	python3 -m unittest tests.session_calc_test
+	python3 -m unittest tests.session_calc_utils_test tests.session_calc_test
 
 build_app:
 	@cd session-calc ; \

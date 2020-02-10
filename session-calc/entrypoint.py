@@ -5,6 +5,7 @@ from session_calc_utils import get_user_sessions, get_sessions_by_group, write_f
 
 
 READ_PATH = os.environ['READ_PATH']
+WRITE_PATH = os.environ['WRITE_PATH']
 USER_KEY = os.environ['USER_KEY']
 TIMESTAMP_KEY = os.environ['TIMESTAMP_KEY']
 MAX_SESSION_SECONDS = os.environ['MAX_SESSION_SECONDS']
@@ -20,7 +21,7 @@ def main(spark):
     sessions_by_group = get_sessions_by_group(user_sessions, GROUP_KEY)
 
     write_first_row_as_json(sessions_by_group,
-                            f'/app/output/sessions_by_{GROUP_KEY}.json')
+                            f'{WRITE_PATH}/sessions_by_{GROUP_KEY}.json')
 
 
 if __name__ == '__main__':
