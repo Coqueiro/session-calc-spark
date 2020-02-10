@@ -1,0 +1,20 @@
+name: Release
+on:
+  push:
+    branches:
+      - master
+jobs:
+  releases:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.ref }}
+      - name: Push Docker Spark Images to Docker Hub
+        run: |
+          HUB_PASSWORD=${{ secrets.hub_password }} make release_docker_spark
+      - name: Push App Image to Docker Hub
+        run: |
+          HUB_PASSWORD=${{ secrets.hub_password }} make release_app
