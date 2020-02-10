@@ -46,7 +46,10 @@ release_docker_spark:
 run_app:
 	@cd docker-spark; docker-compose -f docker-compose.yml up -d
 	@echo "Waiting 10 seconds for docker-spark cluster setup"; sleep 10
-	@docker run --name session-calc -e ENABLE_INIT_DAEMON=false --link spark-master:spark-master --net docker-spark_default ${APP_IMAGE}:${APP_VERSION}
+	@docker run --name session-calc \
+	-e ENABLE_INIT_DAEMON=false \
+	--link spark-master:spark-master \
+	--net docker-spark_default ${APP_IMAGE}:${APP_VERSION}
 
 clean_app:
 	@docker rm -f $(shell docker ps -a -q --filter 'name=session-calc')
