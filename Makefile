@@ -20,14 +20,14 @@ GIT_BRANCH=$(shell git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 test_app:
 	@docker run --rm --name docker-pyspark \
 	-v $(shell pwd)/session-calc:/app:ro \
-	-e READ_PATH=tests/data/part0.json \
+	-e READ_PATH=test/data/part0.json \
 	-e WRITE_PATH=/output \
 	-e USER_KEY=user_key \
 	-e TIMESTAMP_KEY=timestamp_key \
 	-e MAX_SESSION_SECONDS=3600 \
 	-e GROUP_KEY=group_field1 \
 	coqueirotree/docker-pyspark:0.0.1 \
-	python3 -m unittest tests.session_calc_utils_test tests.session_calc_test
+	python3 -m unittest
 
 build_app:
 	@cd session-calc ; \

@@ -2,7 +2,7 @@ import os
 import tempfile
 import unittest
 
-from .spark_test import SparkTest
+from .test_spark import SparkTest
 from session_calc_utils import get_user_sessions, get_sessions_by_group, write_first_row_as_json
 
 
