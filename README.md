@@ -82,13 +82,19 @@ GROUP_KEY=os_family make -k session_calc
 
 
 ## Rodar os testes
-- Para rodar os testes unitários da aplicação é necessário utilizar o comando: `make test_app`, que irá validar as funções auxiliares utilizadas pela aplicação assim como a própria aplicação. Este comando utiliza uma [imagem simples com pyspark](https://github.com/Coqueiro/docker-pyspark) para realizar os testes localmente.
+
+#### Existe um fluxo de CI de cobertura de testes a cada *commit* deste repositório, automatizando a verificação de testes.
+
+- Para rodar os testes unitários da aplicação manualmente é necessário utilizar o comando: `make test_app`, que irá validar as funções auxiliares utilizadas pela aplicação assim como a própria aplicação. Este comando utiliza uma [imagem simples com pyspark](https://github.com/Coqueiro/docker-pyspark) para realizar os testes localmente.
 
 - A versão atual não possui testes de integração.
 
 
 ## Fazendo *release* das imagens
-- Para atualizar a imagem da aplicação e torná-la disponível através do repositório de imagens [Docker Hub](https://hub.docker.com/) é necessário realizar o comando `make release_app` para a aplicação ou `make release_docker_spark` para as imagens do cluster de Spark em Docker. Atualizações no projeto devem ser seguidas de bumps de versão nas imagens para manter a consistência do projeto.
+
+#### Existe um fluxo de CI de *release* a cada *commit* na *branch* `master` deste repositório, automatizando o CI de imagens Docker.
+
+- Para atualizar as imagens manualmente e torná-las disponíveis através do repositório de imagens [Docker Hub](https://hub.docker.com/) é necessário realizar o comando `make release_app` para a aplicação ou `make release_docker_spark` para as imagens do cluster de Spark em Docker. Atualizações no projeto devem ser antecedidas de bumps de versão nas imagens para manter a consistência do projeto.
 
 - Os seguintes parâmetros podem ser utilizados para alterar o *build* da imagem. É recomendado que essas mudanças sejam feitas com cautela por alterarem componentes estruturais da solução:
 
@@ -112,9 +118,3 @@ O objetivo desta análise é entender melhor o *dataset* de entrada, e adaptar a
 - Não existem campos com valores nulos dentro da amostra. Confiando que este padrão é significante, não iremos adicionar etapas de filtros de dados vazios a fim de otimizar a execução da aplicação.
 
 - Um mesmo `anonymous_id` pode ter mais de um `browser_family`, `device_family` ou `os_family` diferentes, com **393** ocorrências na amostragem. Isto é significante pois significa que uma sessão pode percorrer agrupamentos diferentes, e poderia ser, portanto, contada em mais de um agrupamento. Levando em consideração que regra de sessionamento inclui que a abertura da sessão acontece para o primeiro evento de um usuário, e que a taxa de ocorrência desses casos é muito pequena, iremos desconsiderar mudanças de `browser_family`, `device_family` ou `os_family` durante a sessão.
-
-
-## TODO
-
-- Action CI
-- Medidor de Linting
