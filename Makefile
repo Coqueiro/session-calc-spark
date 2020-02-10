@@ -60,10 +60,10 @@ pull_app:
 	@docker pull ${APP_IMAGE}:latest
 
 release_docker_spark:
-	@cd docker-spark/base; CLUSTER_COMPONENT=base make release
-	@cd docker-spark/master; CLUSTER_COMPONENT=master make release
-	@cd docker-spark/worker; CLUSTER_COMPONENT=worker make release
-	@cd docker-spark/submit; CLUSTER_COMPONENT=submit make release
+	@cd docker-spark; CLUSTER_COMPONENT=base make release
+	@cd docker-spark; CLUSTER_COMPONENT=master make release
+	@cd docker-spark; CLUSTER_COMPONENT=worker make release
+	@cd docker-spark; CLUSTER_COMPONENT=submit make release
 
 build_docker_spark:
 	@CLUSTER_COMPONENT=base make build
