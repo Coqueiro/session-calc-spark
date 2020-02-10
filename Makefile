@@ -1,3 +1,6 @@
+READ_PATH?=s3a://lucas-spark-read-test/
+USER_KEY?=anonymous_id
+TIMESTAMP_KEY?=device_sent_timestamp
 MAX_SESSION_SECONDS?=1800
 GROUP_KEY?=device_family # [browser_family, device_family, os_family]
 
@@ -8,10 +11,17 @@ HADOOP_VERSION?=3.1.2
 APP_IMAGE=${HUB_PUBLISHER}/spark-session-calc${SPARK_VERSION}-hadoop${HADOOP_VERSION}-aws-support
 SUBMIT_VERSION=$(shell cat docker-spark/submit/VERSION)
 APP_VERSION=$(shell cat session-calc/VERSION)
+GIT_BRANCH=$(shell git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+
+
+test_app:
+	@python3 -m pip install pyspark
+	@cd session-calc; python3 -m unittest tests.session_calc_test
 
 build_app:
 	@cd session-calc ; \
 	docker build \
+	--build-arg HUB_PUBLISHER="${HUB_PUBLISHER}" \
 	--build-arg SPARK_VERSION="${SPARK_VERSION}" \
 	--build-arg HADOOP_VERSION="${HADOOP_VERSION}" \
 	--build-arg SUBMIT_VERSION="${SUBMIT_VERSION}" \
@@ -50,6 +60,9 @@ run_app:
 	@echo "Waiting 10 seconds for docker-spark cluster setup."; sleep 10
 	@docker run --name session-calc \
 	-e ENABLE_INIT_DAEMON=false \
+	-e READ_PATH=${READ_PATH} \
+	-e USER_KEY=${USER_KEY} \
+	-e TIMESTAMP_KEY=${TIMESTAMP_KEY} \
 	-e MAX_SESSION_SECONDS=${MAX_SESSION_SECONDS} \
 	-e GROUP_KEY=${GROUP_KEY} \
 	-v $(shell pwd)/session-calc/output:/app/output:rw \

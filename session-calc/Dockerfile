@@ -1,8 +1,9 @@
+ARG HUB_PUBLISHER
 ARG SPARK_VERSION
 ARG HADOOP_VERSION
 ARG SUBMIT_VERSION
 
-FROM coqueirotree/spark-submit${SPARK_VERSION}-hadoop${HADOOP_VERSION}-aws-support:${SUBMIT_VERSION}
+FROM ${HUB_PUBLISHER}/spark-submit${SPARK_VERSION}-hadoop${HADOOP_VERSION}-aws-support:${SUBMIT_VERSION}
 
 LABEL maintainer="github.com/Coqueiro"
 

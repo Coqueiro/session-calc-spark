@@ -1,7 +1,7 @@
 # Calcular o tempo de sessão de usuários utilizando um cluster de Spark em Docker
 
 ## Setup
-O arquivo `.hub_password` precisa ser criado e colocado dentro da pasta raíz do projeto. Ele deve conter o token de acesso para o repositório de imagens Docker para que seja possível realizar comandos de `push` e `pull` de imagens.
+O arquivo `.hub_password` precisa ser criado e colocado dentro da pasta raíz do projeto. Ele deve conter o token de acesso para o repositório de imagens Docker para que seja possível realizar comandos de `push` de imagens.
 
 ## Análise exploratória de dados:
 - Não existem campos com valores nulos dentro da amostra. Confiando que este padrão é significante, não iremos adicionar etapas de tratamento de dados a fim de otimizar a execução da aplicação.

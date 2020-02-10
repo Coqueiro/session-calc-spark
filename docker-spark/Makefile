@@ -24,6 +24,7 @@ GIT_BRANCH=$(shell git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 build:
 	@cd ${CLUSTER_COMPONENT} ; \
 	docker build \
+	--build-arg HUB_PUBLISHER="${HUB_PUBLISHER}" \
 	--build-arg SPARK_VERSION="${SPARK_VERSION}" \
 	--build-arg HADOOP_VERSION="${HADOOP_VERSION}" \
 	--build-arg BASE_VERSION="${BASE_VERSION}" \
