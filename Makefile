@@ -1,4 +1,4 @@
-READ_PATH?=s3a://lucas-spark-read-test/
+READ_PATH?=s3a://grupozap-data-engineer-test/
 WRITE_PATH?=session-calc/output
 USER_KEY?=anonymous_id
 TIMESTAMP_KEY?=device_sent_timestamp
@@ -9,10 +9,11 @@ HUB_PUBLISHER?=coqueirotree
 HUB_PASSWORD?=$(shell cat .hub_password)
 SPARK_VERSION?=2.4.4
 HADOOP_VERSION?=3.1.2
+BUMP_LEVEL?=patch # [patch, minor, major]
+
 APP_IMAGE=${HUB_PUBLISHER}/spark-session-calc${SPARK_VERSION}-hadoop${HADOOP_VERSION}-aws-support
 SUBMIT_VERSION=$(shell cat docker-spark/submit/VERSION)
 APP_VERSION=$(shell cat session-calc/VERSION)
-BUMP_LEVEL?=patch # [patch, minor, major]
 GIT_BRANCH=$(shell git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 
 
@@ -52,7 +53,7 @@ bump_app:
 	@git commit -m "session-calc version bump to ${VERSION}"
 	@git push origin ${GIT_BRANCH}
 
-release_app: build_app push_app
+release_app: bump_app build_app push_app
 
 pull_app:
 	@docker pull ${APP_IMAGE}:${APP_VERSION}
@@ -64,6 +65,18 @@ release_docker_spark:
 	@cd docker-spark/worker; CLUSTER_COMPONENT=worker make release
 	@cd docker-spark/submit; CLUSTER_COMPONENT=submit make release
 
+build_docker_spark:
+	@CLUSTER_COMPONENT=base make build
+	@CLUSTER_COMPONENT=master make build
+	@CLUSTER_COMPONENT=worker make build
+	@CLUSTER_COMPONENT=submit make build
+
+pull_docker_spark:
+	@CLUSTER_COMPONENT=base make pull
+	@CLUSTER_COMPONENT=master make pull
+	@CLUSTER_COMPONENT=worker make pull
+	@CLUSTER_COMPONENT=submit make pull
+
 # Support currently available for local docker spark execution only
 run_app:
 	@cd docker-spark; docker-compose -f docker-compose.yml up -d
@@ -71,6 +84,7 @@ run_app:
 	@docker run --rm --name session-calc \
 	-e ENABLE_INIT_DAEMON=false \
 	-e READ_PATH=${READ_PATH} \
+	-e WRITE_PATH=${WRITE_PATH} \
 	-e USER_KEY=${USER_KEY} \
 	-e TIMESTAMP_KEY=${TIMESTAMP_KEY} \
 	-e MAX_SESSION_SECONDS=${MAX_SESSION_SECONDS} \

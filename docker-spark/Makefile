@@ -2,11 +2,9 @@
 HUB_PUBLISHER?=coqueirotree
 HUB_PASSWORD?=$(shell cat ../.hub_password)
 CLUSTER_COMPONENT?=base # [base, master, worker, submit]
-
 # Beware, changes in Spark and Hadoop versions may require additional changes in the project
 SPARK_VERSION?=2.4.4
 HADOOP_VERSION?=3.1.2
-
 BUMP_LEVEL?=patch # [patch, minor, major]
 
 IMAGE=$(shell \
