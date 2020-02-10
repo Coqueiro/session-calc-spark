@@ -2,7 +2,7 @@ from pyspark.sql import functions as f
 
 
 def get_user_sessions(spark, events, user_key, timestamp_key, max_session_seconds):
-    events.registerTempTable('events')
+    events.createOrReplaceTempView('events')
     user_sessions = spark.sql(f'''
         SELECT
             *,

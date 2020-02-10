@@ -11,6 +11,7 @@ HADOOP_VERSION?=3.1.2
 APP_IMAGE=${HUB_PUBLISHER}/spark-session-calc${SPARK_VERSION}-hadoop${HADOOP_VERSION}-aws-support
 SUBMIT_VERSION=$(shell cat docker-spark/submit/VERSION)
 APP_VERSION=$(shell cat session-calc/VERSION)
+BUMP_LEVEL?=patch # [patch, minor, major]
 GIT_BRANCH=$(shell git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 
 

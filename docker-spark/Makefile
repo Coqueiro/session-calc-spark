@@ -8,7 +8,6 @@ SPARK_VERSION?=2.4.4
 HADOOP_VERSION?=3.1.2
 
 BUMP_LEVEL?=patch # [patch, minor, major]
-ARG1?=arg1
 
 IMAGE=$(shell \
 	([ "${CLUSTER_COMPONENT}" = "base" ] && echo "${HUB_PUBLISHER}/spark-base${SPARK_VERSION}-hadoop${HADOOP_VERSION}-aws-support") || \
