@@ -5,6 +5,8 @@ import unittest
 from .test_spark import SparkTest
 from session_calc_utils import get_user_sessions, get_sessions_by_group, write_first_row_as_json
 
+WRITE_PATH = os.environ['WRITE_PATH']
+
 
 class SessionCalcUtilsTest(SparkTest):
 
@@ -61,9 +63,8 @@ class SessionCalcUtilsTest(SparkTest):
         df = self.spark.createDataFrame([
             {"A": 3, "B": 1},
         ])
-        path = tempfile.mkstemp()[1]
         expected_json_text = '{"A":3,"B":1}'
-
+        path = f'{WRITE_PATH}/sessions_by_group_field1.json'
         try:
             write_first_row_as_json(df, path)
             json_text = open(path).read()

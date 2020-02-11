@@ -1,5 +1,5 @@
 READ_PATH?=s3a://grupozap-data-engineer-test/
-WRITE_PATH?=session-calc/output
+WRITE_PATH?=output
 USER_KEY?=anonymous_id
 TIMESTAMP_KEY?=device_sent_timestamp
 MAX_SESSION_SECONDS?=1800
@@ -21,7 +21,7 @@ test_app:
 	@docker run --rm --name docker-pyspark \
 	-v $(shell pwd)/session-calc:/app:ro \
 	-e READ_PATH=test/data/part0.json \
-	-e WRITE_PATH=/output \
+	-e WRITE_PATH=../output \
 	-e USER_KEY=user_key \
 	-e TIMESTAMP_KEY=timestamp_key \
 	-e MAX_SESSION_SECONDS=3600 \
@@ -59,23 +59,29 @@ pull_app:
 	@docker pull ${APP_IMAGE}:${APP_VERSION}
 	@docker pull ${APP_IMAGE}:latest
 
+build_docker_spark:
+	@cd docker-spark; CLUSTER_COMPONENT=base make build
+	@cd docker-spark; CLUSTER_COMPONENT=master make build
+	@cd docker-spark; CLUSTER_COMPONENT=worker make build
+	@cd docker-spark; CLUSTER_COMPONENT=submit make build
+
+bump_docker_spark:
+	@cd docker-spark; CLUSTER_COMPONENT=base BUMP_LEVEL=${BUMP_LEVEL} make bump
+	@cd docker-spark; CLUSTER_COMPONENT=master BUMP_LEVEL=${BUMP_LEVEL} make bump
+	@cd docker-spark; CLUSTER_COMPONENT=worker BUMP_LEVEL=${BUMP_LEVEL} make bump
+	@cd docker-spark; CLUSTER_COMPONENT=submit BUMP_LEVEL=${BUMP_LEVEL} make bump
+
 release_docker_spark:
 	@cd docker-spark; CLUSTER_COMPONENT=base make release
 	@cd docker-spark; CLUSTER_COMPONENT=master make release
 	@cd docker-spark; CLUSTER_COMPONENT=worker make release
 	@cd docker-spark; CLUSTER_COMPONENT=submit make release
 
-build_docker_spark:
-	@CLUSTER_COMPONENT=base make build
-	@CLUSTER_COMPONENT=master make build
-	@CLUSTER_COMPONENT=worker make build
-	@CLUSTER_COMPONENT=submit make build
-
 pull_docker_spark:
-	@CLUSTER_COMPONENT=base make pull
-	@CLUSTER_COMPONENT=master make pull
-	@CLUSTER_COMPONENT=worker make pull
-	@CLUSTER_COMPONENT=submit make pull
+	@cd docker-spark; CLUSTER_COMPONENT=base make pull
+	@cd docker-spark; CLUSTER_COMPONENT=master make pull
+	@cd docker-spark; CLUSTER_COMPONENT=worker make pull
+	@cd docker-spark; CLUSTER_COMPONENT=submit make pull
 
 # Support currently available for local docker spark execution only
 run_docker_spark:

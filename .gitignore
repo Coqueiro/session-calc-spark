@@ -1,6 +1,6 @@
 # Project specific files
 .hub_password
-session-calc/output
+session-calc/output/*.json
 spark-warehouse
 
 # Byte-compiled / optimized / DLL files

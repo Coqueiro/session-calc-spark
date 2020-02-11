@@ -1,3 +1,4 @@
+import os
 from pyspark.sql import functions as f
 
 
@@ -38,5 +39,5 @@ def get_sessions_by_group(user_sessions, group_key):
 
 
 def write_first_row_as_json(df, path):
-    with open(path, 'w') as output_file:
+    with open(f"/app/{path}", 'w') as output_file:
         output_file.write(df.toJSON().first())

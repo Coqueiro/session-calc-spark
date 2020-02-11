@@ -19,4 +19,6 @@ RUN cd /app \
 # Copy the source code
 COPY . /app
 
+WORKDIR /app
+
 CMD ["/bin/bash", "/submit.sh"]
