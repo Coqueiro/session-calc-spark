@@ -1,4 +1,4 @@
-# [Data Engineer Code Challenge](https://grupozap.github.io/squad-data-platform/data-engineer-test)
+# Data Engineer Code Challenge
 
 [![Tests](https://github.com/Coqueiro/session-calc-spark/workflows/Run%20tests/badge.svg)](https://github.com/Coqueiro/session-calc-spark/workflows/Run%20tests/badge.svg)
 [![codecov](https://codecov.io/gh/Coqueiro/session-calc-spark/branch/master/graph/badge.svg?token=L3VbWQEfb4)](https://codecov.io/gh/Coqueiro/session-calc-spark)
@@ -70,7 +70,7 @@ GROUP_KEY=os_family make -k session_calc
 
 |Parâmetro|Valor Padrão|Descrição|
 |---|---|---|
-|`READ_PATH`|`s3a://grupozap-data-engineer-test/`|Endereço de leitura dos arquivos de eventos. Pode ser um endereço na S3 ou local do *container* (é necessário adicionar como volume).|
+|`READ_PATH`|`s3a://lucas-spark-read-test/`|Endereço de leitura dos arquivos de eventos. Pode ser um endereço na S3 ou local do *container* (é necessário adicionar como volume).|
 |`WRITE_PATH`|`output`|Endereço local de escrita do resultado do agrupamento, relativo à pasta `session-calc`. O endereço padrão já está volumado no *container*, portanto os resultados já serão expostos fora do mesmo. Um endereço alternativo pode exigir uma adição de volume durante a execução.|
 |`USER_KEY`|`anonymous_id`|A chave única de referência do usuário. No momento a aplicação só dá suporte para um valor de chave.|
 |`TIMESTAMP_KEY`|`device_sent_timestamp`|A chave de referência de quando o evento foi realizado. Ela é usada para identificar as janelas de sessões do usuário.|
